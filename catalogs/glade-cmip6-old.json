@@ -1,8 +1,8 @@
 {
   "esmcat_version": "0.1.0",
-  "id": "pangeo-cmip6",
-  "description": "This is an ESM collection for CMIP6 Zarr data residing in Pangeo's Google Storage.",
-  "catalog_file": "https://storage.googleapis.com/pangeo-cmip6/pangeo-cmip6-zarr-consolidated-stores.csv",
+  "id": "glade-cmip6",
+  "description": "This is an ESM collection for CMIP6 data accessible on the NCAR's GLADE disk storage system in /glade/collections/cmip/CMIP6",
+  "catalog_file": "/glade/collections/cmip/catalog/intake-esm-datastore/catalogs/glade-cmip6.csv.gz",
   "attributes": [
     {
       "column_name": "activity_id",
@@ -37,11 +37,11 @@
     {
       "column_name": "dcpp_start_year",
       "vocabulary": ""
-    }
+    }         
   ],
   "assets": {
-    "column_name": "zstore",
-    "format": "zarr"
+    "column_name": "path",
+    "format": "netcdf"
   },
   "aggregation_control": {
     "variable_column_name": "variable_id",
@@ -55,19 +55,23 @@
     ],
     "aggregations": [
       {
-        "type": "union",
-        "attribute_name": "variable_id"
-      },
-
-      {
         "type": "join_new",
         "attribute_name": "member_id",
         "options": { "coords": "minimal", "compat": "override" }
       },
-      {
+    {
         "type": "join_new",
         "attribute_name": "dcpp_init_year",
         "options": { "coords": "minimal", "compat": "override" }
+      },
+      {
+        "type": "join_existing",
+        "attribute_name": "time_range",
+        "options": { "dim": "time" }
+      },
+      {
+        "type": "union",
+        "attribute_name": "variable_id"
       }
     ]
   }
